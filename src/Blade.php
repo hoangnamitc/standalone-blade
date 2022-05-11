@@ -10,14 +10,18 @@ use Illuminate\Contracts\Container\Container as ContainerContract;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Facade;
+use Illuminate\View\Compilers\BladeCompiler;
 use Illuminate\View\ViewServiceProvider;
 
 /**
  * @mixin \Illuminate\Contracts\View\Factory
+ * @mixin \Illuminate\View\Compilers\BladeCompiler
  */
 class Blade
 {
     protected Factory $factory;
+
+    protected BladeCompiler $compiler;
 
     final public function __construct(
         protected string|array $viewPaths,
@@ -43,14 +47,19 @@ class Blade
         (new ViewServiceProvider($this->container))->register();
 
         $this->factory = $this->container->get('view');
+        $this->compiler = $this->container->get('blade.compiler');
     }
 
     public function __call(string $name, array $arguments)
     {
+        if (method_exists($this->compiler, $name)) {
+            return $this->compiler->{$name}(...$arguments);
+        }
+
         return $this->factory->{$name}(...$arguments);
     }
 
-    public static function make(string $viewPath, string $cachePath, ?ContainerContract $container = null)
+    public static function new(string $viewPath, string $cachePath, ?ContainerContract $container = null)
     {
         return new static($viewPath, $cachePath, $container);
     }
