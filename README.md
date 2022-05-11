@@ -1,25 +1,14 @@
-
-[<img src="https://github-ads.s3.eu-central-1.amazonaws.com/support-ukraine.svg?t=1" />](https://supportukrainenow.org)
-
 # Use Laravel's Blade templating engine outside of Laravel.
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/ryangjchandler/standalone-blade.svg?style=flat-square)](https://packagist.org/packages/ryangjchandler/standalone-blade)
 [![Tests](https://github.com/ryangjchandler/standalone-blade/actions/workflows/run-tests.yml/badge.svg?branch=main)](https://github.com/ryangjchandler/standalone-blade/actions/workflows/run-tests.yml)
 [![Total Downloads](https://img.shields.io/packagist/dt/ryangjchandler/standalone-blade.svg?style=flat-square)](https://packagist.org/packages/ryangjchandler/standalone-blade)
 
-This is where your description should go. Try and limit it to a paragraph or two. Consider adding a small example.
-
-## Support us
-
-[<img src="https://github-ads.s3.eu-central-1.amazonaws.com/standalone-blade.jpg?t=1" width="419px" />](https://spatie.be/github-ad-click/standalone-blade)
-
-We invest a lot of resources into creating [best in class open source packages](https://spatie.be/open-source). You can support us by [buying one of our paid products](https://spatie.be/open-source/support-us).
-
-We highly appreciate you sending us a postcard from your hometown, mentioning which of our package(s) you are using. You'll find our address on [our contact page](https://spatie.be/about-us). We publish all received postcards on [our virtual postcard wall](https://spatie.be/open-source/postcards).
+This package provides a standalone version of Laravel's Blade templating engine for use outside of Laravel.
 
 ## Installation
 
-You can install the package via composer:
+You can install the package via Composer:
 
 ```bash
 composer require ryangjchandler/standalone-blade
@@ -27,9 +16,20 @@ composer require ryangjchandler/standalone-blade
 
 ## Usage
 
+Begin by creating a new instance of the `RyanChandler\Blade\Blade` class.
+
 ```php
-$skeleton = new RyanChandler\Blade();
-echo $skeleton->echoPhrase('Hello, RyanChandler!');
+use RyanChandler\Blade\Blade;
+
+$blade = new Blade('/path/to/views', '/path/to/cache');
+```
+
+You can now use the `Blade` object to interact with both the `Illuminate\View\Factory` instance and the `Illuminate\View\Compilers\BladeCompiler` instance.
+
+```php
+$html = $blade->make('my-view', ['name' => 'Ryan'])->render();
+
+$blade->directive('echo', fn ($expression) => "<?php echo {$expression}; ?>");
 ```
 
 ## Testing
