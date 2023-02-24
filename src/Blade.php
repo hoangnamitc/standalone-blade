@@ -4,7 +4,6 @@ namespace RyanChandler\Blade;
 
 use Illuminate\Config\Repository;
 use Illuminate\Events\Dispatcher;
-use Illuminate\Container\Container;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Contracts\Container\Container as ContainerContract;
 use Illuminate\Contracts\View\Factory;
