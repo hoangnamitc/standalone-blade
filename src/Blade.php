@@ -58,6 +58,11 @@ class Blade
         return $this->factory->{$name}(...$arguments);
     }
 
+    public function teardown()
+    {
+        $this->container->terminate();
+    }
+
     public static function new(string $viewPath, string $cachePath, ?ContainerContract $container = null)
     {
         return new static($viewPath, $cachePath, $container);
